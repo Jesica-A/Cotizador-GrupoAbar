@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Grupo Abar Neumáticos · Cotizador</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="contenedor">
+
+    <div class="logo">
+      <img src="img/logo.png" alt="Grupo Abar Neumáticos">
+    </div>
+
+    <h1>COTIZADOR</h1>
+    <p class="subtitulo">Completá los datos y copiá la cotización para WhatsApp.</p>
+
+    <div class="campo">
+      <label for="modelo">Marca y modelo / medida</label>
+      <input type="text" id="modelo" placeholder="Ej: GITI CHAMPIRO VP1 215/60R17 95T">
+      <div class="ayuda">Incluí marca y medida (ej: 215/60R17). Se detecta automáticamente.</div>
+    </div>
+
+    <div class="fila">
+      <div class="campo">
+        <label for="sjyS">Precio venta SJyS</label>
+        <input type="text" id="sjyS" inputmode="decimal" placeholder="Ej: 250000">
+      </div>
+      <div class="campo">
+        <label for="cantidad">Cantidad</label>
+        <input type="number" id="cantidad" value="1" min="1">
+      </div>
+    </div>
+
+    <div class="preview-titulo">Vista previa del mensaje</div>
+    <div id="preview">Cargá los datos para ver la cotización...</div>
+
+    <button id="btnCopiar">📋 Copiar cotización para WhatsApp</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

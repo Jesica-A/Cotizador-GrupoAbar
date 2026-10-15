@@ -1,0 +1,215 @@
+:root {
+  --rojo: #c8102e;
+  --rojo-osc: #8e0b20;
+  --negro: #0a0a0a;
+  --gris: #1a1a1a;
+  --gris-borde: #2a2a2a;
+  --texto: #f0f0f0;
+  --texto-dim: #a0a0a0;
+  --verde: #1a2a1e;
+  --verde-borde: #2a4a30;
+}
+
+* { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%; /* evita que iOS agrande el texto solo */
+}
+
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  background: var(--negro);
+  color: var(--texto);
+  margin: 0;
+  padding: 16px 14px 50px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.contenedor {
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+/* ---------- LOGO ---------- */
+.logo {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.logo img {
+  max-width: 200px;
+  width: 70%;
+  height: auto;
+}
+
+.logo-texto {
+  color: var(--rojo);
+  font-size: 26px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  margin: 0;
+}
+
+.logo-sub {
+  color: #fff;
+  font-size: 11px;
+  letter-spacing: 4px;
+  margin-top: 4px;
+  font-weight: 600;
+}
+
+/* ---------- TÍTULOS ---------- */
+h1 {
+  font-size: 26px;
+  margin: 0 0 6px;
+  color: #fff;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.subtitulo {
+  color: var(--texto-dim);
+  font-size: 14px;
+  margin-bottom: 24px;
+  line-height: 1.45;
+}
+
+/* ---------- LABELS E INPUTS ---------- */
+label {
+  display: block;
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 8px;
+  color: var(--texto);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+input[type="text"],
+input[type="number"] {
+  width: 100%;
+  padding: 13px 14px;
+  border: 1px solid var(--gris-borde);
+  border-radius: 8px;
+  background: var(--gris);
+  color: #fff;
+  font-size: 16px;
+  font-family: inherit;
+  transition: border-color .15s;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--rojo);
+}
+
+.fila {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.fila > div { flex: 1; }
+
+.campo { margin-bottom: 14px; }
+
+.ayuda {
+  font-size: 12.5px;
+  color: var(--texto-dim);
+  margin-top: 6px;
+  line-height: 1.45;
+}
+
+/* ---------- VISTA PREVIA ---------- */
+.preview-titulo {
+  font-size: 12px;
+  color: var(--texto-dim);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 22px 0 8px;
+  font-weight: 600;
+}
+
+#preview {
+  background: var(--verde);
+  border: 1px solid var(--verde-borde);
+  border-radius: 12px;
+  padding: 14px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: #e8f5ec;
+  overflow-x: auto;
+}
+
+/* ---------- BOTÓN ---------- */
+button {
+  background: var(--rojo);
+  color: #fff;
+  border: none;
+  padding: 15px;
+  width: 100%;
+  font-size: 16px;
+  font-weight: 700;
+  border-radius: 10px;
+  margin-top: 16px;
+  cursor: pointer;
+  transition: background .15s;
+  letter-spacing: 0.3px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:hover { background: var(--rojo-osc); }
+button:active { transform: scale(.99); }
+
+/* ---------- MEDIA QUERIES ---------- */
+
+/* Pantallas chicas (hasta 400px): más compacto */
+@media (max-width: 400px) {
+  body {
+    padding: 12px 10px 40px;
+  }
+  .logo img {
+    max-width: 160px;
+  }
+  .logo-texto { font-size: 22px; }
+  .logo-sub { font-size: 10px; letter-spacing: 3px; }
+  h1 { font-size: 23px; }
+  .subtitulo { font-size: 13px; margin-bottom: 20px; }
+  label { font-size: 13px; }
+  .ayuda { font-size: 12px; }
+  #preview { font-size: 11.5px; padding: 12px; }
+  button { font-size: 15px; padding: 14px; }
+}
+
+/* Pantallas muy chicas (hasta 360px): apilamos los inputs */
+@media (max-width: 360px) {
+  .fila {
+    flex-direction: column;
+    gap: 0;
+  }
+  .fila > div { margin-bottom: 14px; }
+}
+
+/* Pantallas grandes (tablet/desktop): más aire */
+@media (min-width: 700px) {
+  body {
+    padding: 30px 20px 60px;
+  }
+  .logo { margin-bottom: 28px; }
+  .logo img { max-width: 260px; }
+  h1 { font-size: 30px; }
+  .subtitulo { font-size: 15px; margin-bottom: 30px; }
+  label { font-size: 15px; }
+  #preview {
+    font-size: 14px;
+    padding: 18px;
+  }
+  button {
+    font-size: 17px;
+    padding: 17px;
+  }
+}
