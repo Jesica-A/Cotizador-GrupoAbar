@@ -3,42 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Grupo Abar Neumáticos · Cotizador</title>
+  <title>Grupo Abar · Cotizadores</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="contenedor">
-
     <div class="logo">
       <img src="img/logo.png" alt="Grupo Abar Neumáticos">
     </div>
 
-    <h1>COTIZADOR</h1>
-    <p class="subtitulo">Completá los datos y copiá la cotización para WhatsApp.</p>
+    <h1>Cotizadores</h1>
+    <p class="subtitulo">Elegí qué querés cotizar.</p>
 
-    <div class="campo">
-      <label for="modelo">Marca y modelo / medida</label>
-      <input type="text" id="modelo" placeholder="Ej: GITI CHAMPIRO VP1 215/60R17 95T">
-      <div class="ayuda">Incluí marca y medida (ej: 215/60R17). Se detecta automáticamente.</div>
-    </div>
+    <a href="neumaticos.html" class="boton-menu">
+      <span class="boton-menu-titulo">🛞 Neumáticos SJyS</span>
+      <span class="boton-menu-desc">Cubiertas con planes de pago</span>
+    </a>
 
-    <div class="fila">
-      <div class="campo">
-        <label for="sjyS">Precio venta SJyS</label>
-        <input type="text" id="sjyS" inputmode="decimal" placeholder="Ej: 250000">
-      </div>
-      <div class="campo">
-        <label for="cantidad">Cantidad</label>
-        <input type="number" id="cantidad" value="1" min="1">
-      </div>
-    </div>
-
-    <div class="preview-titulo">Vista previa del mensaje</div>
-    <div id="preview">Cargá los datos para ver la cotización...</div>
-
-    <button id="btnCopiar">📋 Copiar cotización para WhatsApp</button>
+    <a href="tren-delantero.html" class="boton-menu">
+      <span class="boton-menu-titulo">🔧 Tren Delantero y Servicios</span>
+      <span class="boton-menu-desc">Repuestos, mano de obra y servicios de taller</span>
+    </a>
   </div>
-
-  <script src="script.js"></script>
 </body>
 </html>

@@ -109,17 +109,35 @@ function calcular() {
   txt += `*Cantidad:* ${cantidad} neumático${cantidad > 1 ? "s" : ""}\n\n`;
   txt += `*FORMA DE PAGO — TOTAL*\n\n`;
 
-  const total3c = redondearArriba(efectivoTotal * FACTOR_3_CUOTAS);
-  const cuota3c = redondearArriba(total3c / 3);
-  txt += `💳 3 CUOTAS SIN INTERÉS: ${fmt(total3c)}\n`;
-  txt += `   ↳ 3 cuotas de ${fmt(cuota3c)}\n\n`;
+  // 3 cuotas sin interés (se muestra primero)
+const total3c = redondearArriba(efectivoTotal * FACTOR_3_CUOTAS);
+const cuota3c = redondearArriba(total3c / 3);
+txt += `💳 *3 CUOTAS SIN INTERÉS:* ${fmt(total3c)}\n`;
+txt += `   ↳ 3 cuotas de ${fmt(cuota3c)}\n\n`;
 
-  FACTORES.forEach(p => {
-    const total = redondearArriba(efectivoTotal * p.factor);
-    const cuota = redondearArriba(total / p.cuotas);
-    txt += `${p.icono} ${p.nombre}: ${fmt(total)}\n`;
-    txt += `   ↳ ${p.cuotas} cuotas de ${fmt(cuota)}\n\n`;
+// Resto de los planes, agrupados por tarjeta
+const planesAgrupados = {};
+FACTORES.forEach(p => {
+  // Extraer el nombre de la tarjeta (lo que está antes del "·")
+  const partes = p.nombre.split("·");
+  const tarjeta = partes[0].trim();
+
+  if (!planesAgrupados[tarjeta]) {
+    planesAgrupados[tarjeta] = { icono: p.icono, items: [] };
+  }
+  const total = redondearArriba(efectivoTotal * p.factor);
+  const cuota = redondearArriba(total / p.cuotas);
+  planesAgrupados[tarjeta].items.push({ cuotas: p.cuotas, total, cuota });
+});
+
+// Imprimir agrupado
+Object.entries(planesAgrupados).forEach(([tarjeta, data]) => {
+  txt += `${data.icono} *${tarjeta}*\n`;
+  data.items.forEach(item => {
+    txt += `   • ${item.cuotas} cuotas de ${fmt(item.cuota)} (total ${fmt(item.total)})\n`;
   });
+  txt += `\n`;
+});
 
   txt += `💵 *EFECTIVO / TRANSFERENCIA:* ${fmt(efectivoTotal)}\n`;
   if (descuento > 0) {

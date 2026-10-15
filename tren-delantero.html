@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tren Delantero · Grupo Abar</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="contenedor">
+    <div class="logo">
+      <img src="img/logo.png" alt="Grupo Abar Neumáticos">
+    </div>
+
+    <a href="index.html" class="btn-volver">← Volver</a>
+
+    <h1>PRESUPUESTO TALLER</h1>
+    <p class="subtitulo">Cargá repuestos, mano de obra y servicios. Copiá el mensaje para WhatsApp.</p>
+
+    <div class="campo">
+      <label for="cliente">Cliente / Vehículo</label>
+      <input type="text" id="cliente" placeholder="Ej: Peugeot 207 2013">
+    </div>
+
+    <div class="campo">
+      <label>Tipo de vehículo</label>
+      <div class="tipo-vehiculo">
+        <label class="radio-opcion">
+          <input type="radio" name="tipo" value="auto" checked>
+          <span>Auto</span>
+        </label>
+        <label class="radio-opcion">
+          <input type="radio" name="tipo" value="camioneta">
+          <span>Camioneta</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- SELECTOR DE ZONAS -->
+    <div class="campo">
+  <label>Zona a cotizar</label>
+  <div class="tipo-vehiculo tipo-vehiculo-3">
+    <label class="radio-opcion">
+      <input type="radio" name="zonas" value="delantero" checked>
+      <span>Tren delantero</span>
+    </label>
+    <label class="radio-opcion">
+      <input type="radio" name="zonas" value="trasero">
+      <span>Tren trasero</span>
+    </label>
+    <label class="radio-opcion">
+      <input type="radio" name="zonas" value="ambos">
+      <span>Ambos</span>
+    </label>
+  </div>
+</div>
+
+    <!-- ZONAS DINÁMICAS -->
+    <div id="zonas"></div>
+
+    <!-- SERVICIOS GENERALES -->
+    <div class="preview-titulo">Servicios generales</div>
+    <div id="servicios" class="servicios-lista"></div>
+
+    <!-- DIAGNÓSTICO -->
+    <div class="campo checkbox-campo">
+      <label class="checkbox-label">
+        <input type="checkbox" id="diagnostico">
+        <span>Se hizo diagnóstico en nuestro taller (descontar $10.000 del total)</span>
+      </label>
+    </div>
+
+    <!-- TOTAL GENERAL -->
+    <div class="total-general">
+      <span class="total-general-label">TOTAL EFECTIVO</span>
+      <span class="total-general-valor" id="totalGeneral">$0</span>
+    </div>
+
+    <!-- VISTA PREVIA -->
+    <div class="preview-titulo">Vista previa del mensaje</div>
+    <div id="preview">Cargá los datos para ver el presupuesto...</div>
+
+    <button id="btnCopiar">📋 Copiar presupuesto para WhatsApp</button>
+  </div>
+
+  <script src="script-tren.js"></script>
+</body>
+</html>

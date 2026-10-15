@@ -31,6 +31,43 @@ body {
   margin: 0 auto;
 }
 
+/* ---------- HOME / MENÚ ---------- */
+.boton-menu {
+  display: block;
+  background: var(--gris);
+  border: 1px solid var(--gris-borde);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 14px;
+  text-decoration: none;
+  color: var(--texto);
+  transition: border-color .15s, background .15s, transform .1s;
+}
+
+.boton-menu:hover {
+  border-color: var(--rojo);
+  background: #202020;
+}
+
+.boton-menu:active {
+  transform: scale(.99);
+}
+
+.boton-menu-titulo {
+  display: block;
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.boton-menu-desc {
+  display: block;
+  font-size: 13px;
+  color: var(--texto-dim);
+  line-height: 1.4;
+}
+
 /* ---------- LOGO ---------- */
 .logo {
   text-align: center;
@@ -165,6 +202,369 @@ button {
 button:hover { background: var(--rojo-osc); }
 button:active { transform: scale(.99); }
 
+/* ===================================================== */
+/* ============ TALLER / TREN DELANTERO ================ */
+/* ===================================================== */
+
+/* ---------- SELECTOR TIPO VEHÍCULO ---------- */
+.tipo-vehiculo {
+  display: flex;
+  gap: 10px;
+}
+
+.radio-opcion {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--gris);
+  border: 1px solid var(--gris-borde);
+  border-radius: 8px;
+  padding: 12px;
+  cursor: pointer;
+  text-transform: none;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--texto);
+  letter-spacing: 0;
+  margin-bottom: 0;
+  transition: border-color .15s, background .15s;
+}
+
+.radio-opcion input {
+  accent-color: var(--rojo);
+  width: auto;
+}
+
+.radio-opcion:has(input:checked) {
+  border-color: var(--rojo);
+  background: #2a1010;
+}
+
+/* ---------- ZONAS ---------- */
+.zona {
+  background: var(--gris);
+  border: 1px solid var(--gris-borde);
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 16px;
+}
+
+.zona-header {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.zona-titulo {
+  flex: 1;
+  font-weight: 700;
+  font-size: 15px;
+  border: 1px solid var(--gris-borde);
+  background: #202020;
+  color: #fff;
+  padding: 10px 12px;
+  border-radius: 8px;
+  text-transform: none;
+}
+
+.btn-eliminar-zona {
+  background: #3a1010;
+  color: #ff6b6b;
+  border: 1px solid #5a1a1a;
+  border-radius: 8px;
+  width: 38px;
+  height: 38px;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.btn-eliminar-zona:hover { background: #5a1a1a; }
+
+.zona-seccion {
+  margin-bottom: 14px;
+}
+
+.zona-subtitulo {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--texto-dim);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.zona-subtotal {
+  text-align: right;
+  font-weight: 700;
+  color: #fff;
+  padding-top: 10px;
+  border-top: 1px solid var(--gris-borde);
+  font-size: 15px;
+}
+
+/* ---------- ITEMS (repuestos / mano de obra) ---------- */
+.item-row {
+  background: #202020;
+  border: 1px solid var(--gris-borde);
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 8px;
+}
+
+.item-fila-1 {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.item-fila-1 input {
+  flex: 1;
+  padding: 9px 11px;
+  font-size: 14px;
+}
+
+.btn-quitar-item {
+  background: #3a1010;
+  color: #ff6b6b;
+  border: 1px solid #5a1a1a;
+  border-radius: 6px;
+  width: 34px;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.btn-quitar-item:hover { background: #5a1a1a; }
+
+.item-fila-2 {
+  display: grid;
+  grid-template-columns: 1.3fr 0.8fr 1fr 1fr;
+  gap: 8px;
+}
+
+.mo-fila {
+  grid-template-columns: 1.5fr 1.2fr 1fr;
+}
+
+.mini-label {
+  display: block;
+  font-size: 10px;
+  color: var(--texto-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 3px;
+  font-weight: 600;
+}
+
+.item-row input,
+.item-row select {
+  width: 100%;
+  padding: 8px 9px;
+  font-size: 14px;
+  border-radius: 6px;
+  background: #151515;
+  border: 1px solid var(--gris-borde);
+  color: #fff;
+  font-family: inherit;
+}
+
+.solo-lectura {
+  background: #151515;
+  border: 1px solid var(--gris-borde);
+  border-radius: 6px;
+  padding: 8px 9px;
+  font-size: 13px;
+  color: #8fe6a5;
+  font-family: ui-monospace, monospace;
+  font-weight: 600;
+  text-align: right;
+}
+
+/* ---------- BOTÓN SECUNDARIO ---------- */
+.boton-secundario {
+  background: transparent;
+  border: 1px dashed var(--gris-borde);
+  color: var(--texto-dim);
+  border-radius: 8px;
+  padding: 10px;
+  width: 100%;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 6px;
+  margin-bottom: 14px;
+  transition: border-color .15s, color .15s;
+}
+
+.boton-secundario:hover {
+  border-color: var(--rojo);
+  color: #fff;
+}
+
+/* ---------- SERVICIOS ---------- */
+.servicios-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 20px;
+}
+
+.servicio-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--gris);
+  border: 1px solid var(--gris-borde);
+  border-radius: 8px;
+  padding: 11px 13px;
+  cursor: pointer;
+  text-transform: none;
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--texto);
+  letter-spacing: 0;
+  margin-bottom: 0;
+  transition: border-color .15s, background .15s;
+}
+
+.servicio-item:has(input:checked) {
+  border-color: var(--rojo);
+  background: #2a1010;
+}
+
+.servicio-item input {
+  accent-color: var(--rojo);
+  width: auto;
+  flex-shrink: 0;
+}
+
+.servicio-nombre {
+  flex: 1;
+}
+
+.servicio-precio {
+  color: #8fe6a5;
+  font-family: ui-monospace, monospace;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* ---------- CHECKBOX DIAGNÓSTICO ---------- */
+.checkbox-campo {
+  margin: 20px 0;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: var(--gris);
+  border: 1px solid var(--gris-borde);
+  border-radius: 8px;
+  padding: 12px 14px;
+  cursor: pointer;
+  text-transform: none;
+  font-size: 13.5px;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--texto);
+  line-height: 1.45;
+  margin-bottom: 0;
+}
+
+.checkbox-label input {
+  accent-color: var(--rojo);
+  margin-top: 2px;
+  flex-shrink: 0;
+  width: auto;
+}
+
+/* ============ ZONA TÍTULO FIJO ============ */
+.zona-titulo-fijo {
+  flex: 1;
+  font-weight: 700;
+  font-size: 16px;
+  color: #fff;
+  padding: 10px 12px;
+  background: #202020;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ============ SERVICIO CON CANTIDAD ============ */
+.servicio-item .servicio-cant {
+  width: 60px;
+  padding: 6px 8px;
+  font-size: 14px;
+  border-radius: 6px;
+  background: #151515;
+  border: 1px solid var(--gris-borde);
+  color: #fff;
+  text-align: center;
+  font-family: inherit;
+  flex-shrink: 0;
+}
+
+/* ============ TOTAL GENERAL ============ */
+.total-general {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--rojo);
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin: 24px 0 8px;
+  gap: 12px;
+}
+
+.total-general-label {
+  font-size: 14px;
+  font-weight: 800;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.total-general-valor {
+  font-size: 24px;
+  font-weight: 900;
+  color: #fff;
+  font-family: ui-monospace, monospace;
+}
+
+/* ============ BOTÓN VOLVER ============ */
+.btn-volver {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--texto);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: var(--rojo);
+  border: 1px solid var(--gris-borde);
+  transition: color .15s, border-color .15s;
+  text-transform: none;
+  letter-spacing: 0;
+  width: auto;
+}
+
+.btn-volver:hover {
+  color: #fff;
+  border-color: var(--rojo);
+}
+
 /* ---------- MEDIA QUERIES ---------- */
 
 /* Pantallas chicas (hasta 400px): más compacto */
@@ -183,6 +583,41 @@ button:active { transform: scale(.99); }
   .ayuda { font-size: 12px; }
   #preview { font-size: 11.5px; padding: 12px; }
   button { font-size: 15px; padding: 14px; }
+
+  .boton-menu {
+    padding: 16px;
+  }
+  .boton-menu-titulo {
+    font-size: 17px;
+  }
+  .boton-menu-desc {
+    font-size: 12.5px;
+  }
+
+  .total-general {
+    padding: 14px 16px;
+  }
+  .total-general-label {
+    font-size: 12px;
+  }
+  .total-general-valor {
+    font-size: 20px;
+  }
+  .servicio-item .servicio-cant {
+    width: 52px;
+    padding: 5px 6px;
+    font-size: 13px;
+  }
+  .zona-titulo-fijo {
+    font-size: 14px;
+    padding: 9px 10px;
+  }
+
+  .btn-volver {
+    font-size: 12.5px;
+    padding: 7px 10px;
+    margin-bottom: 12px;
+  }
 }
 
 /* Pantallas muy chicas (hasta 360px): apilamos los inputs */
@@ -192,6 +627,23 @@ button:active { transform: scale(.99); }
     gap: 0;
   }
   .fila > div { margin-bottom: 14px; }
+}
+
+/* Pantallas medianas-chicas (hasta 500px): grid de items en 2 columnas */
+@media (max-width: 500px) {
+  .item-fila-2 {
+    grid-template-columns: 1fr 1fr;
+  }
+  .mo-fila {
+    grid-template-columns: 1fr 1fr;
+  }
+  .tipo-vehiculo-3 {
+    flex-direction: column;
+  }
+  .tipo-vehiculo-3 .radio-opcion {
+    width: 100%;
+    padding: 14px;
+  }
 }
 
 /* Pantallas grandes (tablet/desktop): más aire */
