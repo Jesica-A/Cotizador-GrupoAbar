@@ -565,6 +565,20 @@ button:active { transform: scale(.99); }
   border-color: var(--rojo);
 }
 
+/* ============ BOTÓN GUARDAR PDF ============ */
+#btnGuardarPDF {
+  background: var(--gris);
+  color: var(--texto);
+  border: 1px solid var(--gris-borde);
+  margin-top: 10px;
+  font-size: 14px; /* Un toque más chico que el principal */
+}
+
+#btnGuardarPDF:hover {
+  background: #252525;
+  border-color: #444;
+}
+
 /* ---------- MEDIA QUERIES ---------- */
 
 /* Pantallas chicas (hasta 400px): más compacto */

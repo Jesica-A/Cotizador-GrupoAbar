@@ -10,7 +10,6 @@ const TRAMOS_AUMENTO = [
   { max: Infinity, tipo: "fijo", valor: 10000 },
 ];
 
-// conCantidad: true → muestra input de cantidad y multiplica
 const SERVICIOS_FIJOS = {
   auto: [
     { id: "promo",        nombre: "Promo (alineado + 4 balanceos)", precio: 45000, conCantidad: false },
@@ -35,20 +34,21 @@ const SERVICIOS_FIJOS = {
 };
 
 const FACTORES_CUOTAS = [
-  { plan: "VISA / MASTERCARD / CABAL", cuotas: 1,  interes: 0.0250, icono: "💳" },
-  { plan: "VISA / MASTERCARD / CABAL", cuotas: 3,  interes: 0.1560, icono: "💳" },
-  { plan: "VISA / MASTERCARD / CABAL", cuotas: 6,  interes: 0.2650, icono: "💳" },
-  { plan: "VISA / MASTERCARD / CABAL", cuotas: 9,  interes: 0.5000, icono: "💳" },
-  { plan: "VISA / MASTERCARD / CABAL", cuotas: 12, interes: 0.6800, icono: "💳" },
-  { plan: "AMERICAN EXPRESS",          cuotas: 1,  interes: 0.0340, icono: "💳" },
-  { plan: "AMERICAN EXPRESS",          cuotas: 3,  interes: 0.1670, icono: "💳" },
-  { plan: "AMERICAN EXPRESS",          cuotas: 6,  interes: 0.2770, icono: "💳" },
-  { plan: "AMERICAN EXPRESS",          cuotas: 9,  interes: 0.5100, icono: "💳" },
-  { plan: "AMERICAN EXPRESS",          cuotas: 12, interes: 0.6900, icono: "💳" },
-  { plan: "NARANJA X",                 cuotas: 1,  interes: 0.0800, icono: "🟠" },
-  { plan: "NARANJA X",                 cuotas: 3,  interes: 0.1500, icono: "🟠" },
-  { plan: "NARANJA X",                 cuotas: 6,  interes: 0.2600, icono: "🟠" },
-  { plan: "NARANJA X",                 cuotas: 12, interes: 0.6800, icono: "🟠" },
+  { plan: "VISA / MASTERCARD / CABAL", cuotas: 1,  factor: 1.0250, icono: "💳" },
+  { plan: "VISA / MASTERCARD / CABAL", cuotas: 3,  factor: 1.1560, icono: "💳" },
+  { plan: "VISA / MASTERCARD / CABAL", cuotas: 6,  factor: 1.2650, icono: "💳" },
+  { plan: "VISA / MASTERCARD / CABAL", cuotas: 9,  factor: 1.4971, icono: "💳" },
+  { plan: "VISA / MASTERCARD / CABAL", cuotas: 12, factor: 1.6800, icono: "💳" },
+  { plan: "AMERICAN EXPRESS",          cuotas: 1,  factor: 1.0340, icono: "💳" },
+  { plan: "AMERICAN EXPRESS",          cuotas: 3,  factor: 1.1670, icono: "💳" },
+  { plan: "AMERICAN EXPRESS",          cuotas: 6,  factor: 1.2770, icono: "💳" },
+  { plan: "AMERICAN EXPRESS",          cuotas: 9,  factor: 1.5100, icono: "💳" },
+  { plan: "AMERICAN EXPRESS",          cuotas: 12, factor: 1.6900, icono: "💳" },
+  { plan: "NARANJA X",                 cuotas: 1,  factor: 1.0714, icono: "🟠" },
+  { plan: "NARANJA X",                 cuotas: 3,  factor: 1.1429, icono: "🟠" },
+  { plan: "NARANJA X",                 cuotas: 6,  factor: 1.2967, icono: "🟠" },
+  { plan: "NARANJA X",                 cuotas: 9,  factor: 1.4971, icono: "🟠" },
+  { plan: "NARANJA X",                 cuotas: 12, factor: 1.6712, icono: "🟠" },
 ];
 
 const CONTACTO = {
@@ -301,7 +301,7 @@ function calcular() {
       const desc = r.querySelector(".rep-desc").value.trim();
       const costo = parsearPrecio(r.querySelector(".rep-costo").value);
       const cant = parseInt(r.querySelector(".rep-cant").value) || 0;
-      // Redondeamos solo el precio de venta unitario para que quede lindo
+      
       const ventaU = Math.round(calcularPrecioVenta(desc, costo));
       const subtotal = ventaU * cant;
 
@@ -353,9 +353,9 @@ function calcular() {
     serviciosMarcados.push(`• ${nombre}${cantTxt}: ${fmt(subtotal)}`);
   });
 
-  // TOTAL EXACTO (sin redondeo a los mil)
+  // TOTAL EXACTO (Redondeo hacia abajo)
   const totalEfectivoRaw = totalGeneral + totalServicios;
-  const totalEfectivo = totalEfectivoRaw > 0 ? Math.round(totalEfectivoRaw) : 0;
+  const totalEfectivo = totalEfectivoRaw > 0 ? Math.floor(totalEfectivoRaw / 1000) * 1000 : 0;
 
   document.getElementById("totalGeneral").textContent = fmt(totalEfectivo);
 
@@ -370,25 +370,30 @@ function calcular() {
   if (cliente) txt += `*Vehículo:* ${cliente}\n`;
   txt += `\n`;
 
+  // ZONAS (Sin subtotales)
   detalleZonas.forEach(z => {
     txt += `*🔧 ${z.titulo.toUpperCase()}*\n`;
     z.items.forEach(i => txt += i + "\n");
-    txt += `*Subtotal: ${fmt(z.subtotal)}*\n\n`;
+    txt += `\n`;
   });
 
+  // SERVICIOS (Sin subtotales)
   if (serviciosMarcados.length > 0) {
     txt += `*🛠️ SERVICIOS GENERALES*\n`;
     serviciosMarcados.forEach(s => txt += s + "\n");
-    txt += `*Subtotal: ${fmt(totalServicios)}*\n\n`;
+    txt += `\n`;
   }
 
   // --- FORMA DE PAGO ---
   txt += `*FORMA DE PAGO*\n\n`;
 
-  // Promo 3 cuotas
-    const promoActiva = true; // Siempre mostramos la promo
-  if (promoActiva && totalEfectivo > 0) {
-    const totalPromo = redondearArriba(totalEfectivo / (1 - COMISION_PROMO_3CUOTAS));
+  const pagoParcial = parsearPrecio(document.getElementById("pagoEfectivoParcial").value);
+  let saldoTarjeta = totalEfectivo - pagoParcial;
+  if (saldoTarjeta < 0) saldoTarjeta = 0;
+
+  // Promo 3 cuotas (sobre saldoTarjeta)
+  if (saldoTarjeta > 0) {
+    const totalPromo = redondearArriba(saldoTarjeta / (1 - COMISION_PROMO_3CUOTAS));
     const cuotaPromo = Math.round(totalPromo / 3); 
     
     txt += `✨ *PROMO MIÉRCOLES Y SÁBADOS* ✨\n`;
@@ -397,15 +402,21 @@ function calcular() {
   }
 
   // Efectivo
-  txt += `💵 *EFECTIVO / TRANSFERENCIA:* ${fmt(totalEfectivo)}\n\n`;
+  if (pagoParcial > 0) {
+    txt += `💵 *PAGO PARCIAL EN EFECTIVO / TRANSF:* ${fmt(pagoParcial)}\n`;
+    txt += `💳 *SALDO A FINANCIAR:* ${fmt(saldoTarjeta)}\n\n`;
+    txt += `_Los planes de tarjeta a continuación se calculan sobre el saldo de ${fmt(saldoTarjeta)}:_\n\n`;
+  } else {
+    txt += `💵 *EFECTIVO / TRANSFERENCIA:* ${fmt(totalEfectivo)}\n\n`;
+  }
 
-  // Planes agrupados
+  // Planes agrupados (sobre saldoTarjeta)
   const planesAgrupados = {};
   FACTORES_CUOTAS.forEach(f => {
     if (!planesAgrupados[f.plan]) {
       planesAgrupados[f.plan] = { icono: f.icono, items: [] };
     }
-    const total = redondearArriba(totalEfectivo * (1 + f.interes));
+    const total = redondearArriba(saldoTarjeta * f.factor);
     const cuota = Math.round(total / f.cuotas);
     
     let aclaracion = "";
@@ -428,6 +439,11 @@ function calcular() {
     txt += `\n`;
   });
 
+  txt += `🛡️ *GARANTÍAS:*\n`;
+  txt += `• Repuestos en general: 1 mes (fábrica)\n`;
+  txt += `• Amortiguadores: 1 año (fábrica)\n`;
+  txt += `• Mano de obra: mismo tiempo que los repuestos\n\n`;
+  
   txt += `📍 ${CONTACTO.direccion}\n`;
   txt += `📱 Rodrigo: ${CONTACTO.rodrigo}\n`;
   txt += `📱 Taller: ${CONTACTO.taller}\n`;
@@ -449,8 +465,102 @@ function copiar() {
   });
 }
 
+// ============ GUARDAR PDF INTERNO ============
+document.getElementById("btnGuardarPDF").addEventListener("click", () => {
+  const cliente = document.getElementById("cliente").value.trim() || "Sin_nombre";
+  
+  let html = `
+    <div style="font-family: Arial, sans-serif; padding: 20px; color: #000;">
+      <h2 style="color: #c8102e; margin-bottom: 5px;">GRUPO ABAR · PRESUPUESTO INTERNO</h2>
+      <p style="margin-top: 0; font-size: 14px; color: #555;">Solo para uso interno (Incluye costo Abar)</p>
+      <hr style="border: 1px solid #ccc; margin: 15px 0;">
+      <p><strong>Vehículo:</strong> ${cliente.replace(/_/g, " ")}</p>
+      <p><strong>Fecha:</strong> ${new Date().toLocaleDateString("es-AR")}</p>
+      
+      <table style="width: 100%; border-collapse: collapse; font-size: 12px; text-align: left; margin-top: 15px;">
+        <thead>
+          <tr style="background: #eee;">
+            <th style="padding: 8px; border: 1px solid #ccc;">Ítem / Repuesto</th>
+            <th style="padding: 8px; border: 1px solid #ccc;">Costo Abar</th>
+            <th style="padding: 8px; border: 1px solid #ccc;">Venta Unit.</th>
+            <th style="padding: 8px; border: 1px solid #ccc;">Subtotal Venta</th>
+          </tr>
+        </thead>
+        <tbody>
+  `;
+
+  // Recorremos las zonas para buscar los costos y ventas
+  document.querySelectorAll(".zona").forEach(zona => {
+    zona.querySelectorAll(".repuesto").forEach(r => {
+      const desc = r.querySelector(".rep-desc").value.trim();
+      const costo = r.querySelector(".rep-costo").value;
+      const cant = r.querySelector(".rep-cant").value;
+      const ventaU = r.querySelector(".rep-venta").textContent;
+      const subtotal = r.querySelector(".rep-subtotal").textContent;
+      
+      if (desc && costo) {
+        html += `
+          <tr>
+            <td style="padding: 8px; border: 1px solid #ccc;">${desc} (x${cant})</td>
+            <td style="padding: 8px; border: 1px solid #ccc;">$${costo}</td>
+            <td style="padding: 8px; border: 1px solid #ccc;">${ventaU}</td>
+            <td style="padding: 8px; border: 1px solid #ccc;">${subtotal}</td>
+          </tr>
+        `;
+      }
+    });
+  });
+
+  // Calcular Ganancia Total
+  const totalVentaTexto = document.getElementById("totalGeneral").textContent;
+  const totalVenta = parseInt(totalVentaTexto.replace(/[$.]/g, ''), 10) || 0;
+
+  let totalCosto = 0;
+
+  document.querySelectorAll(".zona .repuesto").forEach(r => {
+    const costo = parsearPrecio(r.querySelector(".rep-costo").value);
+    const cant = parseInt(r.querySelector(".rep-cant").value) || 0;
+    totalCosto += (costo * cant);
+  });
+
+  const ganancia = totalVenta - totalCosto;
+
+  html += `
+        </tbody>
+      </table>
+      <div style="text-align: right; margin-top: 20px;">
+        <h3 style="margin: 5px 0;">TOTAL EFECTIVO (Venta): ${document.getElementById("totalGeneral").textContent}</h3>
+        <h3 style="margin: 5px 0; color: #c8102e;">GANANCIA ABAR (aprox): ${fmt(ganancia)}</h3>
+      </div>
+    </div>
+  `;
+
+  // Abrimos una ventana nueva invisible
+  const printWindow = window.open('', '_blank');
+  
+  // Le inyectamos el HTML con los datos
+  printWindow.document.write(`
+    <html>
+      <head>
+        <title>Presupuesto Interno - ${cliente.replace(/_/g, " ")}</title>
+      </head>
+      <body>
+        ${html}
+      </body>
+    </html>
+  `);
+  
+  // Abrimos el diálogo de impresión
+  printWindow.document.close();
+  printWindow.focus();
+  setTimeout(() => {
+    printWindow.print();
+  }, 250);
+});
+
 // ============ EVENTOS ============
 document.getElementById("btnCopiar").addEventListener("click", copiar);
+document.getElementById("pagoEfectivoParcial").addEventListener("input", calcular);
 
 document.querySelectorAll('input[name="tipo"]').forEach(r => {
   r.addEventListener("change", () => {
@@ -462,7 +572,6 @@ document.querySelectorAll('input[name="tipo"]').forEach(r => {
 document.querySelectorAll('input[name="zonas"]').forEach(r => {
   r.addEventListener("change", renderZonas);
 });
-
 
 document.addEventListener("input", (e) => {
   if (e.target.closest("#zonas") || e.target.id === "cliente") {
@@ -476,11 +585,14 @@ document.addEventListener("change", (e) => {
   }
 });
 
-// ============ INIT ============
-renderServicios();
-calcular();
-
-// Forzamos el dibujado de las zonas un microsegundo después de que cargue todo el HTML
-setTimeout(() => {
-  renderZonas();
-}, 10);
+// ============ INIT (Al cargar la página) ============
+document.addEventListener("DOMContentLoaded", () => {
+  renderServicios();
+  
+  // Usamos un pequeño timeout para que el navegador termine de armar el HTML
+  // y no se "coma" las cajas de repuestos y mano de obra.
+  setTimeout(() => {
+    renderZonas();
+    calcular();
+  }, 50);
+});

@@ -38,22 +38,22 @@
 
     <!-- SELECTOR DE ZONAS -->
     <div class="campo">
-  <label>Zona a cotizar</label>
-  <div class="tipo-vehiculo tipo-vehiculo-3">
-    <label class="radio-opcion">
-      <input type="radio" name="zonas" value="delantero" checked>
-      <span>Tren delantero</span>
-    </label>
-    <label class="radio-opcion">
-      <input type="radio" name="zonas" value="trasero">
-      <span>Tren trasero</span>
-    </label>
-    <label class="radio-opcion">
-      <input type="radio" name="zonas" value="ambos">
-      <span>Ambos</span>
-    </label>
-  </div>
-</div>
+      <label>Zona a cotizar</label>
+      <div class="tipo-vehiculo tipo-vehiculo-3">
+        <label class="radio-opcion">
+          <input type="radio" name="zonas" value="delantero" checked>
+          <span>Tren delantero</span>
+        </label>
+        <label class="radio-opcion">
+          <input type="radio" name="zonas" value="trasero">
+          <span>Tren trasero</span>
+        </label>
+        <label class="radio-opcion">
+          <input type="radio" name="zonas" value="ambos">
+          <span>Ambos</span>
+        </label>
+      </div>
+    </div>
 
     <!-- ZONAS DINÁMICAS -->
     <div id="zonas"></div>
@@ -68,13 +68,23 @@
       <span class="total-general-valor" id="totalGeneral">$0</span>
     </div>
 
+    <!-- PAGO MIXTO -->
+    <div class="campo">
+      <label>Pago mixto (opcional): Monto en Efectivo a entregar</label>
+      <input type="text" inputmode="decimal" id="pagoEfectivoParcial" placeholder="Ej: 300000 (Dejalo vacío si paga todo con tarjeta)">
+      <div class="ayuda">Si el cliente entrega una parte en efectivo, escribí el monto acá. El resto se calculará en cuotas.</div>
+    </div>
+
     <!-- VISTA PREVIA -->
     <div class="preview-titulo">Vista previa del mensaje</div>
     <div id="preview">Cargá los datos para ver el presupuesto...</div>
 
     <button id="btnCopiar">📋 Copiar presupuesto para WhatsApp</button>
+    <button id="btnGuardarPDF">🔒 NO CLIENTES - Guardar Presupuesto Interno (PDF)</button>
+    
   </div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script src="script-tren.js"></script>
 </body>
 </html>
