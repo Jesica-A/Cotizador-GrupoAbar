@@ -477,6 +477,10 @@ document.addEventListener("change", (e) => {
 });
 
 // ============ INIT ============
-renderZonas();
 renderServicios();
 calcular();
+
+// Forzamos el dibujado de las zonas un microsegundo después de que cargue todo el HTML
+setTimeout(() => {
+  renderZonas();
+}, 10);
