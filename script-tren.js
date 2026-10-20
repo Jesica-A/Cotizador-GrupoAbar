@@ -1,5 +1,6 @@
 // ============ CONFIGURACIÓN ============
 const AUMENTO_AMORTIGUADOR = 10000;
+const COMISION_PROMO_3CUOTAS = 0.03;
 
 const TRAMOS_AUMENTO = [
   { max: 15000,  tipo: "porcentaje", valor: 0.50 },
@@ -19,17 +20,17 @@ const SERVICIOS_FIJOS = {
     { id: "arme",         nombre: "Arme",                           precio: 5000,  conCantidad: true  },
     { id: "rotacion",     nombre: "Rotación",                       precio: 20000, conCantidad: false },
     { id: "4armes4bal",   nombre: "4 armes + 4 balanceos",          precio: 50000, conCantidad: false },
-    { id: "4ayd4bal",     nombre: "4 arme/desarme + 4 balanceos",   precio: 60000, conCantidad: false },
+    { id: "4ayd4bal",     nombre: "4 arme/desarme + 4 balanceos",   precio: 65000, conCantidad: false },
   ],
   camioneta: [
-    { id: "promo",        nombre: "Promo (alineado + 4 balanceos)", precio: 55000, conCantidad: false },
+    { id: "promo",        nombre: "Promo (alineado + 4 balanceos)", precio: 60000, conCantidad: false },
     { id: "alineado",     nombre: "Alineado",                       precio: 45000, conCantidad: false },
     { id: "balanceo",     nombre: "Balanceo",                       precio: 10000, conCantidad: true  },
     { id: "arme_desarme", nombre: "Arme y desarme",                 precio: 10000, conCantidad: true  },
     { id: "arme",         nombre: "Arme",                           precio: 5000,  conCantidad: true  },
     { id: "rotacion",     nombre: "Rotación",                       precio: 30000, conCantidad: false },
     { id: "4armes4bal",   nombre: "4 armes + 4 balanceos",          precio: 60000, conCantidad: false },
-    { id: "4ayd4bal",     nombre: "4 arme/desarme + 4 balanceos",   precio: 70000, conCantidad: false },
+    { id: "4ayd4bal",     nombre: "4 arme/desarme + 4 balanceos",   precio: 80000, conCantidad: false },
   ],
 };
 
@@ -251,7 +252,6 @@ function renderServicios() {
   const servicios = SERVICIOS_FIJOS[tipo];
   const cont = document.getElementById("servicios");
 
-  // Guardar estado anterior
   const estadoPrevio = {};
   cont.querySelectorAll(".servicio-item").forEach(el => {
     const id = el.dataset.servicio;
@@ -301,7 +301,8 @@ function calcular() {
       const desc = r.querySelector(".rep-desc").value.trim();
       const costo = parsearPrecio(r.querySelector(".rep-costo").value);
       const cant = parseInt(r.querySelector(".rep-cant").value) || 0;
-      const ventaU = calcularPrecioVenta(desc, costo);
+      // Redondeamos solo el precio de venta unitario para que quede lindo
+      const ventaU = Math.round(calcularPrecioVenta(desc, costo));
       const subtotal = ventaU * cant;
 
       r.querySelector(".rep-venta").textContent = fmt(ventaU);
@@ -352,9 +353,9 @@ function calcular() {
     serviciosMarcados.push(`• ${nombre}${cantTxt}: ${fmt(subtotal)}`);
   });
 
-  const descDiagnostico = document.getElementById("diagnostico").checked ? 10000 : 0;
-  const totalEfectivoRaw = totalGeneral + totalServicios - descDiagnostico;
-  const totalEfectivo = totalEfectivoRaw > 0 ? redondearArriba(totalEfectivoRaw) : 0;
+  // TOTAL EXACTO (sin redondeo a los mil)
+  const totalEfectivoRaw = totalGeneral + totalServicios;
+  const totalEfectivo = totalEfectivoRaw > 0 ? Math.round(totalEfectivoRaw) : 0;
 
   document.getElementById("totalGeneral").textContent = fmt(totalEfectivo);
 
@@ -381,36 +382,51 @@ function calcular() {
     txt += `*Subtotal: ${fmt(totalServicios)}*\n\n`;
   }
 
-  if (descDiagnostico > 0) {
-    txt += `_Descuento por diagnóstico en nuestro taller: −${fmt(descDiagnostico)}_\n\n`;
-  }
-
-  txt += `*TOTAL EFECTIVO / TRANSFERENCIA: ${fmt(totalEfectivo)}*\n\n`;
+  // --- FORMA DE PAGO ---
   txt += `*FORMA DE PAGO*\n\n`;
 
-// Agrupar por plan (tarjeta)
-const planesAgrupados = {};
-FACTORES_CUOTAS.forEach(f => {
-  if (!planesAgrupados[f.plan]) {
-    planesAgrupados[f.plan] = { icono: f.icono, items: [] };
+  // Promo 3 cuotas
+    const promoActiva = true; // Siempre mostramos la promo
+  if (promoActiva && totalEfectivo > 0) {
+    const totalPromo = redondearArriba(totalEfectivo / (1 - COMISION_PROMO_3CUOTAS));
+    const cuotaPromo = Math.round(totalPromo / 3); 
+    
+    txt += `✨ *PROMO MIÉRCOLES Y SÁBADOS* ✨\n`;
+    txt += `💳 *VISA / MASTERCARD · 3 CUOTAS SIN INTERÉS*\n`;
+    txt += `   ↳ 3 cuotas de ${fmt(cuotaPromo)} (Precio de lista: ${fmt(totalPromo)})\n\n`;
   }
-  const total = redondearArriba(totalEfectivo * (1 + f.interes));
-  const cuota = redondearArriba(total / f.cuotas);
-  planesAgrupados[f.plan].items.push({ cuotas: f.cuotas, total, cuota });
-});
 
-// Imprimir agrupado
-Object.entries(planesAgrupados).forEach(([plan, data]) => {
-  txt += `${data.icono} *${plan}*\n`;
-  data.items.forEach(item => {
-    if (item.cuotas === 1) {
-      txt += `   • 1 pago: ${fmt(item.total)}\n`;
-    } else {
-      txt += `   • ${item.cuotas} cuotas de ${fmt(item.cuota)} (total ${fmt(item.total)})\n`;
+  // Efectivo
+  txt += `💵 *EFECTIVO / TRANSFERENCIA:* ${fmt(totalEfectivo)}\n\n`;
+
+  // Planes agrupados
+  const planesAgrupados = {};
+  FACTORES_CUOTAS.forEach(f => {
+    if (!planesAgrupados[f.plan]) {
+      planesAgrupados[f.plan] = { icono: f.icono, items: [] };
     }
+    const total = redondearArriba(totalEfectivo * (1 + f.interes));
+    const cuota = Math.round(total / f.cuotas);
+    
+    let aclaracion = "";
+    if (f.plan.includes("VISA") && f.cuotas === 3) {
+      aclaracion = " → _Resto de los días_";
+    }
+    
+    planesAgrupados[f.plan].items.push({ cuotas: f.cuotas, total, cuota, aclaracion });
   });
-  txt += `\n`;
-});
+
+  Object.entries(planesAgrupados).forEach(([plan, data]) => {
+    txt += `${data.icono} *${plan}*\n`;
+    data.items.forEach(item => {
+      if (item.cuotas === 1) {
+        txt += `   • 1 pago: ${fmt(item.total)}\n`;
+      } else {
+        txt += `   • ${item.cuotas} cuotas de ${fmt(item.cuota)} (total ${fmt(item.total)})${item.aclaracion}\n`;
+      }
+    });
+    txt += `\n`;
+  });
 
   txt += `📍 ${CONTACTO.direccion}\n`;
   txt += `📱 Rodrigo: ${CONTACTO.rodrigo}\n`;
@@ -447,7 +463,6 @@ document.querySelectorAll('input[name="zonas"]').forEach(r => {
   r.addEventListener("change", renderZonas);
 });
 
-document.getElementById("diagnostico").addEventListener("change", calcular);
 
 document.addEventListener("input", (e) => {
   if (e.target.closest("#zonas") || e.target.id === "cliente") {
