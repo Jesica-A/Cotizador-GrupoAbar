@@ -1,6 +1,7 @@
 // ============ CONFIGURACIÓN ============
 const AUMENTO_AMORTIGUADOR = 10000;
 const COMISION_PROMO_3CUOTAS = 0.03;
+const FACTOR_CORDOBA_9CUOTAS = 1.2423;
 
 const TRAMOS_AUMENTO = [
   { max: 15000,  tipo: "porcentaje", valor: 0.50 },
@@ -34,12 +35,12 @@ const SERVICIOS_FIJOS = {
 };
 
 const FACTORES_CUOTAS = [
-  { plan: "VISA / MASTERCARD / CABAL", cuotas: 1,  factor: 1.0250, icono: "💳" },
+  { plan: "VISA / MASTERCARD / CABAL", cuotas: 1,  factor: 1.030928, icono: "💳" },
   { plan: "VISA / MASTERCARD / CABAL", cuotas: 3,  factor: 1.1560, icono: "💳" },
   { plan: "VISA / MASTERCARD / CABAL", cuotas: 6,  factor: 1.2650, icono: "💳" },
   { plan: "VISA / MASTERCARD / CABAL", cuotas: 9,  factor: 1.4971, icono: "💳" },
   { plan: "VISA / MASTERCARD / CABAL", cuotas: 12, factor: 1.6800, icono: "💳" },
-  { plan: "AMERICAN EXPRESS",          cuotas: 1,  factor: 1.0340, icono: "💳" },
+  { plan: "AMERICAN EXPRESS",          cuotas: 1,  factor: 1.030928, icono: "💳" },
   { plan: "AMERICAN EXPRESS",          cuotas: 3,  factor: 1.1670, icono: "💳" },
   { plan: "AMERICAN EXPRESS",          cuotas: 6,  factor: 1.2770, icono: "💳" },
   { plan: "AMERICAN EXPRESS",          cuotas: 9,  factor: 1.5100, icono: "💳" },
@@ -399,6 +400,15 @@ function calcular() {
     txt += `✨ *PROMO MIÉRCOLES Y SÁBADOS* ✨\n`;
     txt += `💳 *VISA / MASTERCARD · 3 CUOTAS SIN INTERÉS*\n`;
     txt += `   ↳ 3 cuotas de ${fmt(cuotaPromo)} (Precio de lista: ${fmt(totalPromo)})\n\n`;
+  }
+
+  // PROMO CORDOBESA 9 CUOTAS
+  if (saldoTarjeta > 0) {
+    const totalCordoba = redondearArriba(saldoTarjeta * FACTOR_CORDOBA_9CUOTAS);
+    const cuotaCordoba = Math.round(totalCordoba / 9);
+
+    txt += `🏛️ *PROMO 9 CUOTAS CORDOBESA* 🏛️\n`;
+    txt += `   ↳ 9 cuotas de ${fmt(cuotaCordoba)} (Total: ${fmt(totalCordoba)})\n\n`;
   }
 
   // Efectivo
