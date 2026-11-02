@@ -1,7 +1,7 @@
 // ============ CONFIGURACIÓN ============
 const AUMENTO_AMORTIGUADOR = 10000;
 const COMISION_PROMO_3CUOTAS = 0.03;
-const FACTOR_CORDOBA_9CUOTAS = 1.2423;
+const FACTOR_CORDOBA_9CUOTAS = 1.242366;
 
 const TRAMOS_AUMENTO = [
   { max: 15000,  tipo: "porcentaje", valor: 0.50 },
@@ -394,7 +394,7 @@ function calcular() {
 
   // Promo 3 cuotas (sobre saldoTarjeta)
   if (saldoTarjeta > 0) {
-    const totalPromo = redondearArriba(saldoTarjeta / (1 - COMISION_PROMO_3CUOTAS));
+    const totalPromo = Math.round(saldoTarjeta / (1 - COMISION_PROMO_3CUOTAS));
     const cuotaPromo = Math.round(totalPromo / 3); 
     
     txt += `✨ *PROMO MIÉRCOLES Y SÁBADOS* ✨\n`;
@@ -404,7 +404,7 @@ function calcular() {
 
   // PROMO CORDOBESA 9 CUOTAS
   if (saldoTarjeta > 0) {
-    const totalCordoba = redondearArriba(saldoTarjeta * FACTOR_CORDOBA_9CUOTAS);
+    const totalCordoba = Math.round(saldoTarjeta * FACTOR_CORDOBA_9CUOTAS);
     const cuotaCordoba = Math.round(totalCordoba / 9);
 
     txt += `🏛️ *PROMO 9 CUOTAS CORDOBESA* 🏛️\n`;
@@ -426,7 +426,7 @@ function calcular() {
     if (!planesAgrupados[f.plan]) {
       planesAgrupados[f.plan] = { icono: f.icono, items: [] };
     }
-    const total = redondearArriba(saldoTarjeta * f.factor);
+    const total = Math.round(saldoTarjeta * f.factor);
     const cuota = Math.round(total / f.cuotas);
     
     let aclaracion = "";

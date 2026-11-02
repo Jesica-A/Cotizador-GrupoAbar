@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cotizador de Cuotas · Grupo Abar</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="contenedor">
+    <div class="logo">
+      <img src="img/logo.png" alt="Grupo Abar Neumáticos">
+    </div>
+
+    <a href="index.html" class="btn-volver">← Volver</a>
+
+    <h1>COTIZADOR DE CUOTAS</h1>
+    <p class="subtitulo">Ingresá el monto total en efectivo y copiá el mensaje de WhatsApp.</p>
+
+    <div class="campo">
+      <label for="monto">Monto Total en Efectivo</label>
+      <input type="text" inputmode="decimal" id="monto" placeholder="Ej: 150.000">
+    </div>
+
+    <div class="campo">
+      <label>Pago mixto (opcional): Monto en Efectivo a entregar</label>
+      <input type="text" inputmode="decimal" id="pagoEfectivoParcial" placeholder="Ej: 50000 (Dejalo vacío si paga todo con tarjeta)">
+      <div class="ayuda">Si el cliente entrega una parte en efectivo, escribí el monto acá. El resto se calculará en cuotas.</div>
+    </div>
+
+    <div class="preview-titulo">Vista previa del mensaje</div>
+    <div id="preview">Cargá el monto para ver las cuotas...</div>
+
+    <button id="btnCopiar">📋 Copiar cotización para WhatsApp</button>
+  </div>
+
+  <script src="script-cuotas.js"></script>
+</body>
+</html>
